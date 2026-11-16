@@ -1,0 +1,10 @@
+# exact versions we made the submission with (python 3.14.6)
+# pinned so make_submission.py gives the same csv on every machine
+numpy==2.5.4
+pandas==3.1.0
+scikit-learn==1.9.1
+scipy==1.18.1
+joblib==1.6.0
+threadpoolctl==3.8.0
+kloppy==3.18.0
+lxml==6.1.3
