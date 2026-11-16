@@ -18,7 +18,7 @@ Short version:
 | tactical tracking (`_atd.txt` + `.xml`) | yes, main input | players + ball every frame. team per slot from the xml |
 | smart tagging | a little | only the set piece tags with a team (corner, goal kick, free kick): small push to that team for 5 s from the tag start, thats the team taking the restart. the other tags we dropped, see below |
 | homography | no | only needed to draw on the video or to do our own detection, we didnt do that |
-| tactical video | no (only watched it to understand errors) | no video model, too much work for too little and no labels to train on |
+| tactical video | no | no video model, too much work for too little and no labels to train on |
 | broadcast files | no | own timeline with cuts and replays, no mapping to the tactical frames |
 | public answers (first 5 min) | only as a check | to make sure the pipeline is aligned and the file is right. nothing is tuned on it |
 | Metrica open sample data, 3 matches | yes, training + testing | other games, allowed. github.com/metrica-sports/sample-data |
@@ -119,7 +119,7 @@ Mean spellF1, 10 practice matches, each left out of training:
 the baseline gets 0.243 on the real full match (organisers number), close to its 0.270 on the noisy copies, so the noisy copies look like a fair stand-in for our match
 
 Our match:
-- TODO possessions, avg TODO s, TODO% dead
+- 320 possessions, avg 12.6 s (median 6.7 s), 36.7% of graded frames dead
 - Barca has the ball 61% of the live time, normal for Barca
 - public 5 min (check only, way too small to trust): spellF1 0.644, 19 possessions (true 17)
 
@@ -144,8 +144,9 @@ How we got here (earlier versions, same practice matches):
 ## 7. How to reproduce
 
 ```
-setup.bat                                  (or: python -m venv .venv + pip install -r requirements.txt)
-.venv\Scripts\activate
+python -m venv .venv
+.venv\Scripts\activate                     (linux / mac: source .venv/bin/activate)
+pip install -r requirements.txt
 python make_submission.py                  -> Octo.csv
 python evaluation/validate_submission.py Octo.csv
 ```
@@ -155,7 +156,12 @@ Data you need (not in the repo):
 - Metrica: `git clone https://github.com/metrica-sports/sample-data data/external/metrica-sample`
 - DFL / IDSSE: the `DFL_*.xml` files from https://huggingface.co/datasets/pysport/idsse-data into `data/external/idsse/`
 
-TODO: exact package versions, run time, check on a clean machine
+What we checked:
+- ran it twice: byte identical
+- fresh download of the repo + new python env + no caches: same file again, passes `validate_submission.py`
+- our setup: Windows 11, Python 3.14.6, exact package versions in `requirements.txt`, ~20 min first run on a 12 core pc
+- md5 of our `Octo.csv`: `41656109f196cffbf413b263a3567286`
+- the tree models use several CPU threads. on a different machine / OS tiny rounding differences could in theory flip a few frames. if the file differs, this is the first thing wed look at
 
 ---
 
