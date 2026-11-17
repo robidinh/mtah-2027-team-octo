@@ -350,6 +350,15 @@ On 10 other full matches (the real test, see 3.7-3.16):
 - **same file every run:** ran it twice, byte identical (md5 `41656109...`)
 - **dropped from the submission repo:** two other model versions we tried (fusion_control, learned_control) and the tuning script. part of their settings were picked using the public 5 min, which the rules dont allow, so they dont belong in the submission
 
+### 3.19 2nd half kickoff fix + bigger model test, 2026-11-17
+- **kickoff fix**
+  - **What:** frames 110,808-113,741 (2nd half, before the kickoff at 113,742) are now always D, and the path search for half 2 starts at the kickoff
+  - **Why:** FAQ says these frames are graded and dead. our old rules version forced that (3.3) but segment_control didnt, it gave H/A on 2,396 of them
+  - **Result:** only those frames change (+1 frame right after the kickoff), 6 fake possessions gone, our match now 314 possessions, 38% dead. same file every run (md5 `6dfecd09...`). not in the public 5 min, so nothing to tune there
+- **bigger models / other windows** (12 versions x scale 0.3 / 0.4 / 0.6, 10 practice matches left out in turn)
+  - best: 400 trees with 63 leaves + 10 s window, +0.018 (labels as they come) / +0.010 (relabelled), better on 7 of 10
+  - pick best on 5 matches, check on the other 5 (200 random splits): only ~+0.007 left -> noise, kept the original
+
 ---
 
 ## 4. Open issues

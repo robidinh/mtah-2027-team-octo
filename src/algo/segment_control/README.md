@@ -68,6 +68,6 @@ Mean spellF1 over the 10 practice matches, each left out of training in turn, sc
 
 - The ball model was trained on all 10 practice matches. It sees the ball positions of the left-out match, not its
   labels.
-- Our match: 320 possessions, mean 12.6 s, 37% dead. The file is the same on every run.
+- Our match: 314 possessions, mean 12.5 s, 38% dead. The file is the same on every run.
 - Public 5 minutes, a check only: spellF1 0.644, macroF1 0.743, 19 possessions (17 true). Alive / dead F1 0.92,
   but A F1 only 0.48: A frames called H.

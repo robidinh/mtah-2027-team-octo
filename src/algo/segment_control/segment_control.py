@@ -393,7 +393,15 @@ def run(params, workers, out_name):
     ball_models = ball_fill.load_models()
     models, durations, train_rows = train(list(PRACTICE), ball_models)
     prepared = with_inputs(prepared_set("public", ball_models))
+    # FAQ: 2nd half frames before its kickoff are graded and always dead. the path of half 2 starts at the
+    # kickoff, the frames before it are D
+    kickoff = load.load_smart_tagging.KICKOFF_VIDEO_FRAMES["2nd Half"]
+    pre_kickoff = [(first, kickoff) for half, first, last in prepared["halves"] if half == 2 and first < kickoff]
+    prepared["halves"] = [(half, max(first, kickoff) if half == 2 else first, last)
+                          for half, first, last in prepared["halves"]]
     labels = label_target(prepared, models, durations, train_rows, params, tag_bonus(len(prepared["gt"])))[0]
+    for first, end in pre_kickoff:
+        labels[first:end] = "D"
     os.makedirs(RESULTS_DIR, exist_ok=True)
     out_path = os.path.join(RESULTS_DIR, "{}.csv".format(out_name))
     with open(out_path, "w") as handle:

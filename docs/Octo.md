@@ -101,9 +101,10 @@ every clue also as its average over 1 s and 4 s before and after the frame.
   - vs the practice labels relabelled to the challenge rules (a touch isnt a change), 0.4 is best (0.694 vs 0.687-0.692)
   - higher scale = more and shorter possessions, which fits Bundesliga's "every touch counts" labels but not the challenge. so 0.4
 - path memory (how long a possession / stoppage is tracked by age): 6, 10, 15 s -> 0.638 / 0.639 / 0.640, noise, kept 6 s
+- tree size and time windows (12 versions: more / bigger trees, slower learning, 0.4 s and 10 s windows, each at scale 0.3 / 0.4 / 0.6): best ones +0.01 to +0.018, but only better on 7 of 10 matches. picking the best on 5 matches and checking on the other 5 leaves ~+0.007, noise. kept the original
 - logistic regression mixed into the trees: worse at every scale, not used
 - re-training on our own match with its confident frames as pseudo labels: same score, not used (simpler)
-- smart tag weight: cant be tested, no practice match has tags. set to a small push, and we checked how much it changes our file: 111 frames (0.07% of graded frames), same 320 possessions. so its basically harmless either way
+- smart tag weight: cant be tested, no practice match has tags. set to a small push, and we checked how much it changes our file: 111 frames (0.07% of graded frames), same number of possessions. so its basically harmless either way
 
 ---
 
@@ -119,8 +120,8 @@ Mean spellF1, 10 practice matches, each left out of training:
 the baseline gets 0.243 on the real full match (organisers number), close to its 0.270 on the noisy copies, so the noisy copies look like a fair stand-in for our match
 
 Our match:
-- 320 possessions, avg 12.6 s (median 6.7 s), 36.7% of graded frames dead
-- Barca has the ball 61% of the live time, normal for Barca
+- 314 possessions, avg 12.5 s (median 6.7 s), 38.2% of graded frames dead
+- Barca has the ball 60% of the live time, normal for Barca
 - public 5 min (check only, way too small to trust): spellF1 0.644, 19 possessions (true 17)
 
 How we got here (earlier versions, same practice matches):
@@ -160,7 +161,7 @@ What we checked:
 - ran it twice: byte identical
 - fresh download of the repo + new python env + no caches: same file again, passes `validate_submission.py`
 - our setup: Windows 11, Python 3.14.6, exact package versions in `requirements.txt`, ~20 min first run on a 12 core pc
-- md5 of our `Octo.csv`: `41656109f196cffbf413b263a3567286`
+- md5 of our `Octo.csv`: `6dfecd096cefba3d9aa14cce05d47644`
 - the tree models use several CPU threads. on a different machine / OS tiny rounding differences could in theory flip a few frames. if the file differs, this is the first thing wed look at
 
 ---
